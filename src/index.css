@@ -1,0 +1,95 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  background: #0c2b19;
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #c7f05a;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #e4fba9;
+}
+
+::selection {
+  background: #c7f05a;
+  color: #0c2b19;
+}
+
+.nav-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(242, 245, 238, 0.8);
+  padding: 8px 18px;
+  border-radius: 999px;
+}
+
+.nav-link:hover {
+  color: #f2f5ee;
+  background: rgba(242, 245, 238, 0.1);
+}
+
+.nav-link.active {
+  color: #0c2b19;
+  background: #f2f5ee;
+}
+
+.cta-lime {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0c2b19;
+  background: #c7f05a;
+  padding: 11px 20px;
+  border-radius: 999px;
+}
+
+.cta-lime:hover {
+  background: #e4fba9;
+  color: #0c2b19;
+}
+
+.cta-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #f2f5ee;
+  background: #0c2b19;
+  padding: 15px 24px;
+  border-radius: 999px;
+}
+
+.cta-dark:hover {
+  background: #143a22;
+  color: #f2f5ee;
+}
+
+.species-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 245, 238, 0.28);
+  background: rgba(12, 43, 25, 0.55);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.species-btn.on {
+  border-color: #c7f05a;
+  background: #c7f05a;
+  color: #0c2b19;
+}
