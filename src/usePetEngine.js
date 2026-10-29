@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CLIPS, FRAMES, clipInfo, spriteUrl } from "./pets";
+import { CLIPS, FRAMES, SPECIES, clipInfo, spriteUrl } from "./pets";
 import {
   actionFacing,
   advanceAnimation,
@@ -89,13 +89,16 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
     load(state.species);
     const switchSpecies = (next) => {
       if (state.species === next) return false;
-      // Capture the currently visible blend so rapid switches remain continuous
+      const from = SPECIES.findIndex((pet) => pet.id === state.species);
+      const to = SPECIES.findIndex((pet) => pet.id === next);
+      const direction = to >= from ? 1 : -1;
+      // Capture the current frame so the old pet can slide out
       if (!reducedMotion.matches && canvas.width && canvas.height) {
         const snapshot = document.createElement("canvas");
         snapshot.width = canvas.width;
         snapshot.height = canvas.height;
         snapshot.getContext("2d").drawImage(canvas, 0, 0);
-        state.transition = { snapshot, start: null };
+        state.transition = { snapshot, start: null, direction, ms: 420 };
       } else state.transition = null;
       state.species = next;
       load(next);
@@ -375,15 +378,22 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       const img = sheets[state.species]?.[c.clip];
       const ready = img?.complete && img.naturalWidth;
       let blend = 1;
+      let slideIn = 0;
       if (state.transition && !reducedMotion.matches) {
         if (ready) state.transition.start ??= now;
+        const durationMs = state.transition.ms || 420;
         const progress =
           state.transition.start === null
             ? 0
-            : Math.min(1, (now - state.transition.start) / 220);
+            : Math.min(1, (now - state.transition.start) / durationMs);
         blend = progress * progress * (3 - 2 * progress);
+        const direction = state.transition.direction || 1;
+        const distance = Math.min(72, state.width * 0.12);
+        const slideOut = -direction * distance * blend;
+        slideIn = direction * distance * (1 - blend);
         ctx.save();
         ctx.globalAlpha = 1 - blend;
+        ctx.translate(slideOut, 0);
         ctx.drawImage(
           state.transition.snapshot,
           0,
@@ -396,6 +406,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       } else state.transition = null;
       ctx.save();
       ctx.globalAlpha = blend;
+      ctx.translate(slideIn, 0);
       for (const r of state.ripples) {
         ctx.beginPath();
         ctx.arc(r.x, r.y, 8 + r.t * 52, 0, Math.PI * 2);

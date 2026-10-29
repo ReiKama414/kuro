@@ -33,6 +33,13 @@ export default function Kuro() {
   const [filter, setFilter] = useState("all");
   const [toast, setToast] = useState("");
   const [petScroll, setPetScroll] = useState({ left: false, right: false });
+  const [petSwap, setPetSwap] = useState(false);
+  const [swapDir, setSwapDir] = useState(0);
+  const [tabIndicator, setTabIndicator] = useState({
+    left: 0,
+    width: 0,
+    ready: false,
+  });
   const previousRoam = useRef(false);
   const focusButton = useRef(null);
   const exitButton = useRef(null);
@@ -100,23 +107,65 @@ export default function Kuro() {
   useEffect(() => {
     const tabs = petTabsRef.current;
     if (!tabs) return;
-    const reveal = (behavior = "instant") => {
-      const selected = tabs.querySelector('[aria-pressed="true"]');
+    const syncIndicator = () => {
+      const selected = tabs.querySelector(".pet-tab.selected");
       if (!selected) return;
-      const left =
-        selected.getBoundingClientRect().left -
-        tabs.getBoundingClientRect().left +
-        tabs.scrollLeft;
-      tabs.scrollTo({
-        left: left - (tabs.clientWidth - selected.clientWidth) / 2,
-        behavior,
+      // Content-space position stays correct while the strip scrolls
+      setTabIndicator({
+        left: selected.offsetLeft,
+        width: selected.offsetWidth,
+        ready: true,
       });
     };
-    reveal(scrollBehavior());
-    const observer = new ResizeObserver(() => reveal());
+    const revealIfNeeded = (behavior = "instant") => {
+      const selected = tabs.querySelector('[aria-pressed="true"]');
+      if (!selected) return;
+      const tabsRect = tabs.getBoundingClientRect();
+      const selRect = selected.getBoundingClientRect();
+      const pad = 12;
+      const fullyVisible =
+        selRect.left >= tabsRect.left + pad &&
+        selRect.right <= tabsRect.right - pad;
+      // Only scroll when the chosen pet is clipped — avoid yanking neighbors into view
+      if (!fullyVisible) {
+        const left =
+          selRect.left - tabsRect.left + tabs.scrollLeft;
+        tabs.scrollTo({
+          left: left - (tabs.clientWidth - selected.clientWidth) / 2,
+          behavior,
+        });
+      }
+      syncIndicator();
+    };
+    const frame = requestAnimationFrame(() => {
+      revealIfNeeded(scrollBehavior());
+      syncIndicator();
+    });
+    const observer = new ResizeObserver(() => {
+      revealIfNeeded("instant");
+      syncIndicator();
+    });
     observer.observe(tabs);
-    return () => observer.disconnect();
+    tabs.addEventListener("scroll", syncIndicator, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      tabs.removeEventListener("scroll", syncIndicator);
+    };
   }, [species]);
+
+  useEffect(() => {
+    if (!petSwap) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timerId = window.setTimeout(
+      () => {
+        setPetSwap(false);
+        setSwapDir(0);
+      },
+      reduce ? 0 : 450,
+    );
+    return () => window.clearTimeout(timerId);
+  }, [petSwap, species]);
 
   useEffect(() => {
     try {
@@ -206,7 +255,14 @@ export default function Kuro() {
     return () => window.removeEventListener("keydown", onKey);
   });
   const selectPet = (id, scroll = false) => {
-    setSpecies(id);
+    if (id !== species) {
+      const from = SPECIES.findIndex((item) => item.id === species);
+      const to = SPECIES.findIndex((item) => item.id === id);
+      setSwapDir(to >= from ? 1 : -1);
+      setSpecies(id);
+      setPetSwap(false);
+      requestAnimationFrame(() => setPetSwap(true));
+    }
     if (scroll)
       playgroundRef.current?.scrollIntoView({
         behavior: scrollBehavior(),
@@ -401,10 +457,18 @@ export default function Kuro() {
                 role="group"
                 aria-label="選擇小夥伴"
               >
+                <span
+                  className={`pet-tab-indicator${tabIndicator.ready ? " ready" : ""}${petSwap ? " moving" : ""}`}
+                  style={{
+                    width: `${tabIndicator.width}px`,
+                    left: `${tabIndicator.left}px`,
+                  }}
+                  aria-hidden="true"
+                />
                 {SPECIES.map((item) => (
                   <button
                     key={item.id}
-                    className={`pet-tab ${species === item.id ? "selected" : ""}`}
+                    className={`pet-tab${species === item.id ? " selected" : ""}${species === item.id && petSwap ? " is-arriving" : ""}`}
                     aria-pressed={species === item.id}
                     onClick={() => selectPet(item.id)}
                     onKeyDown={(event) => navigatePets(event, item.id)}
@@ -476,7 +540,7 @@ export default function Kuro() {
               </details>
             </div>
             <div
-              className={`pet-stage ${grid ? "with-grid" : ""}`}
+              className={`pet-stage ${grid ? "with-grid" : ""}${petSwap ? " is-swapping" : ""}${swapDir < 0 ? " swap-left" : ""}${swapDir > 0 ? " swap-right" : ""}`}
               ref={stageRef}
               onPointerMove={(event) => api()?.pointerMove(event)}
               onPointerLeave={() => api()?.pointerLeave()}
@@ -655,10 +719,29 @@ export default function Kuro() {
           <Icon name="paw" size={20} />
           <span>kuro*</span>
         </a>
-        <span>CURSOR PET PLAYGROUND</span>
-        <span>
-          MADE BY REI <span className="footer-asterisk">✳</span> 2026
-        </span>
+        <p className="footer-copy">
+          © 2026 ReiKama414. All rights reserved.
+        </p>
+        <nav className="footer-links" aria-label="站外連結">
+          <a
+            href="https://reikama414.vercel.app/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="個人網站"
+            title="個人網站"
+          >
+            <Icon name="site" size={18} />
+          </a>
+          <a
+            href="https://github.com/ReiKama414/kuro"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <Icon name="github" size={18} />
+          </a>
+        </nav>
       </footer>
       <div className={`toast ${toast ? "visible" : ""}`} role="status">
         <Icon name="check" size={16} />
