@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { CLIPS, SPECIES, FRAMES, readSettings, spriteUrl } from "./pets";
 import usePetEngine from "./usePetEngine";
 import useFocusTimer from "./useFocusTimer";
 import Icon from "./Icon";
+import Hero from "./Hero";
 
 function Sprite({ species, clip = "idle", size = 80, animate = true }) {
   const frames = FRAMES[species][clip];
@@ -36,6 +38,8 @@ export default function Kuro() {
   const playgroundRef = useRef(null);
   const petTabsRef = useRef(null);
   const settingsRef = useRef(null);
+  const uiTransition = useRef(null);
+  const focusScroll = useRef(0);
   const timer = useFocusTimer();
   const { stageRef, canvasRef, hud, api } = usePetEngine({
     species,
@@ -43,10 +47,24 @@ export default function Kuro() {
     roam,
   });
   const pet = SPECIES.find((item) => item.id === species);
-  const petIndex = SPECIES.indexOf(pet);
-  const stepPet = (step) =>
-    selectPet(SPECIES[(petIndex + step + SPECIES.length) % SPECIES.length].id);
   const currentClip = CLIPS.find((item) => item.name === hud.clip) || CLIPS[0];
+  const transitionUI = (update) => {
+    if (
+      !document.startViewTransition ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      update();
+      return;
+    }
+    uiTransition.current?.skipTransition();
+    uiTransition.current = document.startViewTransition(() =>
+      flushSync(update),
+    );
+  };
+  const scrollBehavior = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "instant"
+      : "smooth";
 
   useEffect(() => {
     const tabs = petTabsRef.current;
@@ -63,7 +81,7 @@ export default function Kuro() {
         behavior,
       });
     };
-    reveal("smooth");
+    reveal(scrollBehavior());
     const observer = new ResizeObserver(() => reveal());
     observer.observe(tabs);
     return () => observer.disconnect();
@@ -95,7 +113,7 @@ export default function Kuro() {
   }, []);
   useEffect(() => {
     if (!focus) return;
-    const scrollY = window.scrollY;
+    const scrollY = focusScroll.current;
     document.body.classList.add("is-focusing");
     exitButton.current?.focus({ preventScroll: true });
     return () => {
@@ -105,14 +123,19 @@ export default function Kuro() {
     };
   }, [focus]);
   const enterFocus = () => {
+    focusScroll.current = window.scrollY;
     previousRoam.current = roam;
-    setRoam(true);
-    setFocus(true);
     api()?.pointerLeave();
+    transitionUI(() => {
+      setRoam(true);
+      setFocus(true);
+    });
   };
   const leaveFocus = () => {
-    setFocus(false);
-    setRoam(previousRoam.current);
+    transitionUI(() => {
+      setFocus(false);
+      setRoam(previousRoam.current);
+    });
   };
   useEffect(() => {
     const onKey = (event) => {
@@ -155,7 +178,7 @@ export default function Kuro() {
     setSpecies(id);
     if (scroll)
       playgroundRef.current?.scrollIntoView({
-        behavior: "smooth",
+        behavior: scrollBehavior(),
         block: "start",
       });
   };
@@ -181,7 +204,7 @@ export default function Kuro() {
       : null;
     api()?.preview(name, origin);
     playgroundRef.current?.scrollIntoView({
-      behavior: "smooth",
+      behavior: scrollBehavior(),
       block: "start",
     });
   };
@@ -237,47 +260,7 @@ export default function Kuro() {
         </button>
       </header>
       <main>
-        <section
-          className="intro page-width"
-          id="top"
-          aria-labelledby="intro-title"
-        >
-          <div className="intro-copy">
-            <p className="eyebrow">
-              <span className="little-line" /> {SPECIES.length} CHARACTERS / {CLIPS.length} ANIMATIONS
-            </p>
-            <h1 id="intro-title">
-              KURO
-              <br />
-              <span>游標寵物</span>
-              <span className="headline-star" aria-hidden="true">
-                ✳
-              </span>
-            </h1>
-            <div className="intro-bottom">
-              <a
-                className="intro-start"
-                href="#playground"
-              >
-                開始互動 <Icon name="arrow" size={19} />
-              </a>
-            </div>
-          </div>
-          <div className="character-preview" aria-label="角色預覽">
-            <div className="character-preview-top mono">
-              <span>CHARACTERS</span>
-              <span>{pet.number} / {String(SPECIES.length).padStart(2, "0")}</span>
-            </div>
-            <button className="character-art" onClick={() => selectPet(species, true)} aria-label={`使用${pet.label}`}>
-              <Sprite key={species} species={species} size={300} />
-            </button>
-            <div className="character-preview-bottom">
-              <button className="character-prev" onClick={() => stepPet(-1)} aria-label="上一隻角色"><Icon name="arrow" size={20} /></button>
-              <div className="character-name" aria-live="polite"><strong>{pet.label}</strong><span className="mono">{pet.en}</span></div>
-              <button onClick={() => stepPet(1)} aria-label="下一隻角色"><Icon name="arrow" size={20} /></button>
-            </div>
-          </div>
-        </section>
+        <Hero onSelect={selectPet} />
 
         <section
           id="playground"
@@ -316,9 +299,7 @@ export default function Kuro() {
             </button>
           </div>
           <div className="focus-timer" aria-label="專注計時器">
-            <p className="eyebrow">
-              FOCUS TIMER
-            </p>
+            <p className="eyebrow">FOCUS TIMER</p>
             <div
               className="timer-time"
               role="timer"
@@ -332,7 +313,9 @@ export default function Kuro() {
                 ? "計時完成"
                 : timer.running
                   ? "計時中"
-                  : timer.remaining < timer.minutes * 60 ? "已暫停" : "選擇時長"}
+                  : timer.remaining < timer.minutes * 60
+                    ? "已暫停"
+                    : "選擇時長"}
             </p>
             <div className="timer-controls">
               <div className="timer-durations" aria-label="專注時長">
@@ -562,7 +545,7 @@ export default function Kuro() {
                 <button
                   key={value}
                   aria-pressed={filter === value}
-                  onClick={() => setFilter(value)}
+                  onClick={() => transitionUI(() => setFilter(value))}
                 >
                   {label}
                   <span>{count}</span>
@@ -580,7 +563,7 @@ export default function Kuro() {
             ).map((clip) => (
               <button
                 className={`state-card ${hud.clip === clip.name ? "is-active" : ""}`}
-                key={`${species}-${clip.name}`}
+                key={clip.name}
                 aria-label={`試播${clip.label}`}
                 aria-pressed={hud.clip === clip.name}
                 onClick={(event) => preview(clip.name, event)}
@@ -595,7 +578,12 @@ export default function Kuro() {
                       : `${FRAMES[species][clip.name]} FRAMES`}
                   </span>
                 </span>
-                <Sprite species={species} clip={clip.name} size={105} />
+                <Sprite
+                  species={species}
+                  clip={clip.name}
+                  size={105}
+                  animate={hud.clip === clip.name}
+                />
                 <span className="card-title">
                   {clip.label}
                   <Icon name="arrow" size={15} />

@@ -34,6 +34,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
     const stage = stageRef.current;
     const ctx = canvas.getContext("2d");
     const sheets = {};
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const c = {
       x: 0,
       y: 0,
@@ -70,6 +71,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       nextRoam: 0,
       hudAt: 0,
       lastHud: "",
+      transition: null,
       api: null,
     };
     world.current = state;
@@ -85,6 +87,20 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       );
     };
     load(state.species);
+    const switchSpecies = (next) => {
+      if (state.species === next) return false;
+      // Capture the currently visible blend so rapid switches remain continuous
+      if (!reducedMotion.matches && canvas.width && canvas.height) {
+        const snapshot = document.createElement("canvas");
+        snapshot.width = canvas.width;
+        snapshot.height = canvas.height;
+        snapshot.getContext("2d").drawImage(canvas, 0, 0);
+        state.transition = { snapshot, start: null };
+      } else state.transition = null;
+      state.species = next;
+      load(next);
+      return true;
+    };
     const petScale = () =>
       Math.min(
         options.current.scale * (state.width < 560 ? 0.78 : 1) * 0.86,
@@ -146,10 +162,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       demo = false,
       pointerOrigin = null,
     ) => {
-      if (state.species !== options.current.species) {
-        state.species = options.current.species;
-        load(state.species);
-      }
+      switchSpecies(options.current.species);
       reset();
       state.pointer = null;
       state.preview = { name, remaining: seconds, demo, pointerOrigin };
@@ -234,6 +247,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
+      state.transition = null;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (!state.placed) {
         c.x = rect.width * 0.5;
@@ -254,9 +268,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
     resize();
 
     const update = (dt, now) => {
-      if (state.species !== options.current.species) {
-        state.species = options.current.species;
-        load(state.species);
+      if (switchSpecies(options.current.species)) {
         reset();
         setClip("idle", true);
       }
@@ -358,8 +370,32 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       publish(now);
     };
 
-    const draw = () => {
+    const draw = (now) => {
       ctx.clearRect(0, 0, state.width, state.height);
+      const img = sheets[state.species]?.[c.clip];
+      const ready = img?.complete && img.naturalWidth;
+      let blend = 1;
+      if (state.transition && !reducedMotion.matches) {
+        if (ready) state.transition.start ??= now;
+        const progress =
+          state.transition.start === null
+            ? 0
+            : Math.min(1, (now - state.transition.start) / 220);
+        blend = progress * progress * (3 - 2 * progress);
+        ctx.save();
+        ctx.globalAlpha = 1 - blend;
+        ctx.drawImage(
+          state.transition.snapshot,
+          0,
+          0,
+          state.width,
+          state.height,
+        );
+        ctx.restore();
+        if (progress >= 1) state.transition = null;
+      } else state.transition = null;
+      ctx.save();
+      ctx.globalAlpha = blend;
       for (const r of state.ripples) {
         ctx.beginPath();
         ctx.arc(r.x, r.y, 8 + r.t * 52, 0, Math.PI * 2);
@@ -389,8 +425,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       ctx.fillStyle = `rgba(12,43,25,${0.2 * (1 - lift / (50 * s))})`;
       ctx.fill();
       ctx.restore();
-      const img = sheets[state.species]?.[c.clip];
-      if (img?.complete && img.naturalWidth) {
+      if (ready) {
         ctx.save();
         ctx.translate(c.x, c.y - size + 6 * s - lift);
         if (c.clip === "jump" && c.face === "left") ctx.scale(-1, 1);
@@ -409,7 +444,7 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
       }
       for (const heart of state.hearts) {
         ctx.save();
-        ctx.globalAlpha = Math.min(1, (1.2 - heart.t) * 2);
+        ctx.globalAlpha = blend * Math.min(1, (1.2 - heart.t) * 2);
         ctx.translate(
           heart.x + Math.sin(heart.t * 5) * 8,
           heart.y - heart.t * 45,
@@ -423,13 +458,14 @@ export default function usePetEngine({ species, scale, roam, onInteract }) {
         ctx.fill();
         ctx.restore();
       }
+      ctx.restore();
     };
     let raf;
     const tick = (now) => {
       const dt = Math.min(0.05, state.last ? (now - state.last) / 1000 : 0.016);
       state.last = now;
       update(dt, now);
-      draw();
+      draw(now);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);

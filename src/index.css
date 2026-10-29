@@ -102,11 +102,6 @@ kbd {
   background: var(--lime);
   border-radius: 50%;
 }
-.handwritten {
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
-  font-weight: 400;
-}
 .sprite {
   display: block;
   flex-shrink: 0;
@@ -150,13 +145,6 @@ kbd {
 }
 .wordmark-dot {
   color: var(--lime);
-}
-.header-note {
-  font-family: Georgia, serif;
-  font-size: 16px;
-  font-style: italic;
-  color: var(--muted);
-  padding-left: 3px;
 }
 .site-header nav {
   display: flex;
@@ -264,119 +252,6 @@ kbd {
   color: #b7c7b1;
   letter-spacing: 0.04em;
 }
-.round-link {
-  width: 46px;
-  height: 46px;
-  border: 1px solid #70886b;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  transform: rotate(45deg);
-}
-.round-link:hover {
-  background: var(--lime);
-  border-color: var(--lime);
-  color: var(--ink);
-}
-.roommates {
-  position: relative;
-  height: 330px;
-  max-width: 510px;
-  justify-self: stretch;
-}
-.roommates-label {
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-}
-.roommates-trail {
-  position: absolute;
-  inset: 14px 0 0;
-  width: 100%;
-  height: 100%;
-  fill: none;
-  stroke: #6c8f61;
-  stroke-width: 1;
-  stroke-dasharray: 3 6;
-  opacity: 0.6;
-}
-.hello-note {
-  position: absolute;
-  left: 23%;
-  top: 18px;
-  font-size: 23px;
-  color: var(--lime);
-  transform: rotate(-9deg);
-}
-.roommate {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 0;
-  background: none;
-  transition: transform 0.25s;
-}
-.roommate:hover {
-  transform: translateY(-8px) rotate(-3deg);
-  z-index: 2;
-}
-.roommate > .sprite {
-  filter: drop-shadow(0 9px 0 rgba(0, 0, 0, 0.07));
-}
-.roommate > span:last-child {
-  display: flex;
-  gap: 10px;
-  margin-top: 4px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 8px;
-  color: #b5c5ad;
-  letter-spacing: 0.1em;
-}
-.roommate > span:last-child > span {
-  color: var(--lime);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.roommate:hover > span:last-child > span {
-  opacity: 1;
-}
-.roommate-0 {
-  left: 2%;
-  top: 22px;
-  transform: rotate(-7deg);
-}
-.roommate-1 {
-  left: 34%;
-  top: 81px;
-  transform: rotate(5deg);
-}
-.roommate-2 {
-  right: 0;
-  top: 21px;
-  transform: rotate(5deg);
-}
-.roommate-3 {
-  left: 4%;
-  top: 166px;
-  transform: rotate(-5deg);
-}
-.roommate-4 {
-  right: 2%;
-  top: 174px;
-  transform: rotate(6deg);
-}
-.roommates-footnote {
-  position: absolute;
-  bottom: -7px;
-  left: 40%;
-  font-size: 10px;
-  letter-spacing: 0.09em;
-  color: #92aa8b;
-}
 
 .playground-section {
   scroll-margin-top: 30px;
@@ -434,118 +309,6 @@ kbd {
 .pet-tabs {
   display: flex;
   gap: 9px;
-}
-.character-preview {
-  width: 100%;
-  max-width: 460px;
-  justify-self: end;
-  padding: 12px 24px 22px;
-}
-.character-preview-top {
-  display: flex;
-  justify-content: space-between;
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-}
-.character-art {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 310px;
-  padding: 0;
-  background: transparent;
-}
-.character-art .sprite {
-  filter: drop-shadow(0 12px 12px #00000018);
-  transition: transform 0.25s;
-}
-.character-art:hover .sprite {
-  transform: translateY(-5px);
-}
-.character-preview-bottom {
-  display: grid;
-  grid-template-columns: 44px 1fr 44px;
-  align-items: center;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
-}
-.character-preview-bottom > button {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--paper);
-}
-.character-preview-bottom > button:hover {
-  background: var(--lime);
-  border-color: var(--lime);
-  color: var(--ink);
-}
-.character-prev svg {
-  transform: rotate(180deg);
-}
-.character-name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-.character-name strong {
-  font-size: 16px;
-  font-weight: 500;
-}
-.character-name > span {
-  color: var(--muted);
-  font-size: 10px;
-}
-.intro-start {
-  display: inline-flex;
-  align-items: center;
-  gap: 24px;
-  padding-block: 12px;
-  border-bottom: 1px solid var(--lime);
-  color: var(--lime);
-  font-size: 13px;
-}
-.intro-start:hover {
-  gap: 32px;
-}
-.site-footer {
-  margin-top: 72px;
-}
-@media (max-width: 760px) {
-  .character-preview {
-    justify-self: center;
-    max-width: 430px;
-    padding: 16px 8px 8px;
-  }
-  .character-art {
-    height: 260px;
-  }
-  .character-art .sprite {
-    --sprite-size: 260px !important;
-  }
-  .intro h1 {
-    font-size: clamp(42px, 9vw, 61px);
-  }
-  .intro .headline-star {
-    margin-left: 18px;
-    font-size: 40px;
-  }
-  .playground-footnote > span:first-child {
-    display: flex;
-  }
-  .playground-footnote {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .site-footer {
-    margin-top: 48px;
-  }
 }
 .pet-tab {
   position: relative;
@@ -759,40 +522,6 @@ kbd {
 }
 .hud-pets > b {
   font-weight: 400;
-}
-.stage-invitation {
-  position: absolute;
-  inset: 105px 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-  transition:
-    opacity 0.6s,
-    transform 0.6s;
-}
-.stage-invitation .handwritten {
-  font-size: 24px;
-  color: #d5ecbe;
-}
-.stage-invitation > span:nth-child(2) {
-  font-size: 10px;
-  color: #d5ecbe;
-  letter-spacing: 0.13em;
-}
-.stage-invitation svg {
-  width: 60px;
-  height: 45px;
-  margin-top: 3px;
-  fill: none;
-  stroke: #c7f05a;
-  stroke-width: 1.2;
-  transform: rotate(12deg);
-}
-.stage-invitation.dismissed {
-  opacity: 0;
-  transform: translateY(-7px);
 }
 .stage-coordinate {
   position: absolute;
@@ -1026,70 +755,6 @@ kbd {
 }
 .card-footer > span {
   color: #617e56;
-}
-.state-note {
-  margin-top: 27px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 25px;
-  padding: 25px 0;
-  border-bottom: 1px solid var(--line);
-}
-.state-note .handwritten {
-  font-size: 21px;
-  color: #99b786;
-  transform: rotate(-3deg);
-  white-space: nowrap;
-}
-.state-note p {
-  font-size: 11px;
-  color: #94ad88;
-  line-height: 1.9;
-  margin-left: auto;
-}
-.state-note > svg {
-  color: #a4bd82;
-  margin-left: 10px;
-  transform: rotate(16deg);
-}
-.quiet-invite {
-  padding-block: 64px 65px;
-}
-.quiet-invite > .eyebrow {
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  color: #8ea77f;
-}
-.quiet-invite > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 25px;
-  margin-top: 15px;
-}
-.quiet-invite h2 {
-  font-size: 30px;
-  font-weight: 500;
-  letter-spacing: -0.04em;
-}
-.quiet-invite > p {
-  color: #96ad89;
-  font-size: 11px;
-  margin-top: 13px;
-}
-.text-link {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  color: var(--lime);
-  background: none;
-  border-bottom: 1px solid #71984c;
-  padding: 10px 0;
-  font-size: 12px;
-}
-.text-link:hover {
-  gap: 35px;
 }
 .site-footer {
   border-top: 1px solid var(--line);
@@ -1343,9 +1008,6 @@ kbd {
     padding-inline: 32px;
     gap: 24px;
   }
-  .header-note {
-    display: none;
-  }
   .intro {
     gap: 30px;
     padding-top: 55px;
@@ -1356,26 +1018,6 @@ kbd {
   .headline-star {
     font-size: 52px;
     margin-left: 23px;
-  }
-  .roommates {
-    height: 315px;
-    transform: scale(0.9);
-    transform-origin: center;
-  }
-  .roommates .roommate-0 {
-    left: -3%;
-  }
-  .roommates .roommate-2 {
-    right: -5%;
-  }
-  .roommate-3 {
-    left: -4%;
-  }
-  .roommate-4 {
-    right: -5%;
-  }
-  .roommate-1 {
-    left: 30%;
   }
   .pet-tab {
     min-width: 111px;
@@ -1403,9 +1045,6 @@ kbd {
   }
   .action-button kbd {
     margin-left: 1px;
-  }
-  .state-note .handwritten {
-    font-size: 18px;
   }
 }
 @media (max-width: 760px) {
@@ -1468,60 +1107,6 @@ kbd {
   }
   .intro-bottom p {
     font-size: 11px;
-  }
-  .round-link {
-    width: 39px;
-    height: 39px;
-  }
-  .roommates {
-    height: 260px;
-    max-width: 430px;
-    width: 100%;
-    margin: 0 auto;
-    transform: none;
-  }
-  .roommates-label {
-    font-size: 7px;
-  }
-  .hello-note {
-    font-size: 19px;
-    left: 34%;
-    top: 30px;
-  }
-  .roommate > .sprite {
-    --sprite-size: 115px !important;
-  }
-  .roommate > span:last-child {
-    font-size: 7px;
-  }
-  .roommate-0 {
-    left: 0 !important;
-    top: 7px;
-  }
-  .roommate-1 {
-    left: 34%;
-    top: 77px;
-  }
-  .roommate-2 {
-    right: 0 !important;
-    top: 8px;
-  }
-  .roommate-3 {
-    left: 3%;
-    top: 137px;
-  }
-  .roommate-4 {
-    right: 0;
-    top: 142px;
-  }
-  .roommates-footnote {
-    left: 36%;
-    bottom: -1px;
-    font-size: 9px;
-  }
-  .roommates-trail {
-    top: 0;
-    height: 255px;
   }
   .section-heading {
     margin-bottom: 20px;
@@ -1604,18 +1189,6 @@ kbd {
   }
   .hud-pets {
     font-size: 9px;
-  }
-  .stage-invitation {
-    top: 77px;
-  }
-  .stage-invitation .handwritten {
-    font-size: 22px;
-  }
-  .stage-invitation > span:nth-child(2) {
-    font-size: 9px;
-  }
-  .stage-invitation svg {
-    height: 38px;
   }
   .stage-caption {
     right: 16px;
@@ -1739,47 +1312,6 @@ kbd {
   .card-title svg {
     width: 12px;
   }
-  .state-note {
-    margin-top: 21px;
-    padding-block: 13px 21px;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  .state-note .handwritten {
-    font-size: 17px;
-  }
-  .state-note p {
-    order: 3;
-    width: 100%;
-    margin-left: 0;
-    font-size: 10px;
-  }
-  .state-note > svg {
-    width: 24px;
-    margin-left: auto;
-  }
-  .quiet-invite {
-    padding-block: 43px 44px;
-  }
-  .quiet-invite > .eyebrow {
-    font-size: 7px;
-  }
-  .quiet-invite > div {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .quiet-invite h2 {
-    font-size: 26px;
-  }
-  .quiet-invite > p {
-    font-size: 10px;
-    margin-top: 16px;
-  }
-  .text-link {
-    font-size: 11px;
-    gap: 22px;
-  }
   .site-footer {
     padding-block: 23px 26px;
     gap: 15px;
@@ -1881,13 +1413,6 @@ kbd {
   .header-focus {
     margin-left: auto;
   }
-  .roommate > .sprite {
-    --sprite-size: 105px !important;
-  }
-  .roommates-footnote {
-    font-size: 8px;
-    left: 33%;
-  }
   .state-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1944,17 +1469,10 @@ kbd {
   *::after {
     transition: none !important;
   }
-  .roommates .sprite-animated {
-    animation: none;
-  }
   .timer-dot.running {
     animation: none;
   }
-  .state-card:hover,
-  .roommate:hover,
-  .button-lime:hover {
-    transform: none;
-  }
+  .state-card: hover;
 }
 .intro h1 > span:not(.headline-star) {
   color: var(--lime);
@@ -1976,18 +1494,6 @@ kbd {
   }
 }
 /* A growing cast stays compact in the introduction and scrollable toolbar */
-.roommates {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: 110px;
-  align-content: center;
-  align-items: center;
-  height: auto;
-  min-height: 395px;
-  padding: 25px 0 24px;
-  gap: 0 8px;
-  transform: none;
-}
 @media (max-width: 480px) {
   .section-heading,
   .states-section .section-heading {
@@ -2006,29 +1512,6 @@ kbd {
   .section-heading > p > span {
     margin-left: 8px;
   }
-}
-.roommates .roommate {
-  position: relative;
-  inset: auto !important;
-  justify-self: center;
-  transform: rotate(var(--tilt, 0deg));
-}
-.roommates .roommate:hover {
-  transform: translateY(-5px) rotate(0deg);
-}
-.roommates .roommate > .sprite {
-  --sprite-size: 104px !important;
-}
-.roommates .hello-note {
-  left: 0;
-  top: 5px;
-  font-size: 17px;
-}
-.roommates-footnote {
-  left: 0;
-  right: 0;
-  text-align: center;
-  bottom: -2px;
 }
 .pet-tabs {
   flex: 1;
@@ -2055,19 +1538,6 @@ kbd {
   display: none;
 }
 @media (max-width: 760px) {
-  .roommates {
-    height: auto;
-    min-height: 355px;
-    grid-auto-rows: 98px;
-    gap: 0 3px;
-  }
-  .roommates .roommate > .sprite {
-    --sprite-size: 96px !important;
-  }
-  .roommates-footnote {
-    left: 0;
-    bottom: -2px;
-  }
   .pet-tabs {
     gap: 0;
   }
@@ -2084,5 +1554,44 @@ kbd {
   }
   .pet-tab > span:nth-child(2) {
     font-size: 9px;
+  }
+}
+
+.site-footer {
+  margin-top: 72px;
+}
+@media (max-width: 760px) {
+  .playground-footnote > span:first-child {
+    display: flex;
+  }
+  .playground-footnote {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .site-footer {
+    margin-top: 48px;
+  }
+}
+/* Focus and filter changes use short fades, with no page movement */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 160ms;
+}
+::view-transition {
+  pointer-events: none;
+}
+.state-card {
+  transition:
+    background 180ms,
+    border-color 180ms,
+    transform 220ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .state-card:hover .sprite {
+    animation: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }
