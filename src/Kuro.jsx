@@ -32,6 +32,7 @@ export default function Kuro() {
   const [focus, setFocus] = useState(false);
   const [filter, setFilter] = useState("all");
   const [toast, setToast] = useState("");
+  const [petScroll, setPetScroll] = useState({ left: false, right: false });
   const previousRoam = useRef(false);
   const focusButton = useRef(null);
   const exitButton = useRef(null);
@@ -65,6 +66,36 @@ export default function Kuro() {
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
       ? "instant"
       : "smooth";
+  const scrollPets = (direction) => {
+    const tabs = petTabsRef.current;
+    tabs?.scrollBy({
+      left: direction * tabs.clientWidth * 0.65,
+      behavior: scrollBehavior(),
+    });
+  };
+
+  useEffect(() => {
+    const tabs = petTabsRef.current;
+    const update = () => {
+      const next = {
+        left: tabs.scrollLeft > 2,
+        right: tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 2,
+      };
+      setPetScroll((previous) =>
+        previous.left === next.left && previous.right === next.right
+          ? previous
+          : next,
+      );
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(tabs);
+    tabs.addEventListener("scroll", update, { passive: true });
+    return () => {
+      observer.disconnect();
+      tabs.removeEventListener("scroll", update);
+    };
+  }, []);
 
   useEffect(() => {
     const tabs = petTabsRef.current;
@@ -352,8 +383,20 @@ export default function Kuro() {
           </div>
           <div className="playground-shell">
             <div className="pet-toolbar">
+              {(petScroll.left || petScroll.right) && (
+                <button
+                  className="pet-scroll-button pet-scroll-left"
+                  aria-label="向左顯示角色"
+                  disabled={!petScroll.left}
+                  onClick={() => scrollPets(-1)}
+                >
+                  <Icon name="arrow" size={16} />
+                </button>
+              )}
               <div
                 className="pet-tabs"
+                data-scroll-left={petScroll.left}
+                data-scroll-right={petScroll.right}
                 ref={petTabsRef}
                 role="group"
                 aria-label="選擇小夥伴"
@@ -379,6 +422,16 @@ export default function Kuro() {
                   </button>
                 ))}
               </div>
+              {(petScroll.left || petScroll.right) && (
+                <button
+                  className="pet-scroll-button"
+                  aria-label="向右顯示角色"
+                  disabled={!petScroll.right}
+                  onClick={() => scrollPets(1)}
+                >
+                  <Icon name="arrow" size={16} />
+                </button>
+              )}
               <details className="scene-settings" ref={settingsRef}>
                 <summary aria-label="場景設定" title="場景設定">
                   <Icon name="settings" size={19} />

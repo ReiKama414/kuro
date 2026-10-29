@@ -1520,8 +1520,45 @@ kbd {
   overflow-x: auto;
   justify-content: space-between;
   scroll-snap-type: x proximity;
-  scrollbar-width: thin;
-  scrollbar-color: #4c7040 transparent;
+  scrollbar-width: none;
+  --edge-left: 0px;
+  --edge-right: 0px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--edge-left),
+    #000 calc(100% - var(--edge-right)),
+    transparent
+  );
+}
+.pet-tabs::-webkit-scrollbar {
+  display: none;
+}
+.pet-tabs[data-scroll-left="true"] {
+  --edge-left: 14px;
+}
+.pet-tabs[data-scroll-right="true"] {
+  --edge-right: 14px;
+}
+.pet-scroll-button {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  flex: 0 0 26px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+}
+.pet-scroll-left svg {
+  transform: rotate(180deg);
+}
+.pet-scroll-button:hover:not(:disabled) {
+  color: var(--lime);
+}
+.pet-scroll-button:disabled {
+  opacity: 0.2;
+  cursor: default;
 }
 .pet-tab {
   min-width: 0;

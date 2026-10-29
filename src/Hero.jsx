@@ -137,7 +137,7 @@ export default function Hero({ onSelect }) {
 
   return (
     <section
-      className="hero page-width"
+      className="hero"
       id="top"
       ref={heroRef}
       aria-labelledby="hero-title"
@@ -168,57 +168,59 @@ export default function Hero({ onSelect }) {
         <span className="hero-geometry hero-ring" />
         <span className="hero-geometry hero-cross" />
       </div>
-      <div className="hero-copy">
-        <p className="hero-kicker mono">CURSOR PET PLAYGROUND</p>
-        <h1 id="hero-title" aria-label="KURO">
-          {Array.from("kuro*").map((letter, index) => (
-            <span
-              className={`hero-letter ${letter === "*" ? "hero-asterisk" : ""}`}
-              key={index}
-              aria-hidden="true"
-            >
-              {letter}
-            </span>
-          ))}
-        </h1>
-        <a className="hero-link mono" href="#playground">
-          PLAYGROUND <Icon name="arrow" size={17} />
-        </a>
-      </div>
-      <div className="hero-cast" role="group" aria-label="選擇角色">
-        {SPECIES.map((pet, index) => {
-          const [x, y, size, mx, my, ms] = PLACEMENTS[index];
-          return (
-            <button
-              className="hero-character"
-              key={pet.id}
-              onClick={() => onSelect(pet.id, true)}
-              aria-label={`使用${pet.label}`}
-              style={{
-                "--x": `${x}%`,
-                "--y": `${y}%`,
-                "--size": `${size}px`,
-                "--mx": `${mx}%`,
-                "--my": `${my}%`,
-                "--ms": `${ms}px`,
-              }}
-            >
-              <span className="hero-drift">
-                <span className="hero-float">
-                  <span
-                    className="hero-sprite"
-                    style={{ backgroundImage: `url('${spriteUrl(pet.id)}')` }}
-                  />
-                </span>
+      <div className="hero-inner page-width">
+        <div className="hero-copy">
+          <p className="hero-kicker mono">CURSOR PET PLAYGROUND</p>
+          <h1 id="hero-title" aria-label="KURO">
+            {Array.from("kuro*").map((letter, index) => (
+              <span
+                className={`hero-letter ${letter === "*" ? "hero-asterisk" : ""}`}
+                key={index}
+                aria-hidden="true"
+              >
+                {letter}
               </span>
-              <span className="hero-character-name">{pet.label}</span>
-            </button>
-          );
-        })}
-      </div>
-      <div className="hero-index mono">
-        <span>{String(SPECIES.length).padStart(2, "0")} CHARACTERS</span>
-        <span>{CLIPS.length} STATES</span>
+            ))}
+          </h1>
+          <a className="hero-link mono" href="#playground">
+            PLAYGROUND <Icon name="arrow" size={17} />
+          </a>
+        </div>
+        <div className="hero-cast" role="group" aria-label="選擇角色">
+          {SPECIES.map((pet, index) => {
+            const [x, y, size, mx, my, ms] = PLACEMENTS[index];
+            return (
+              <button
+                className="hero-character"
+                key={pet.id}
+                onClick={() => onSelect(pet.id, true)}
+                aria-label={`使用${pet.label}`}
+                style={{
+                  "--x": `${x}%`,
+                  "--y": `${y}%`,
+                  "--size": `${size}px`,
+                  "--mx": `${mx}%`,
+                  "--my": `${my}%`,
+                  "--ms": `${ms}px`,
+                }}
+              >
+                <span className="hero-drift">
+                  <span className="hero-float">
+                    <span
+                      className="hero-sprite"
+                      style={{ backgroundImage: `url('${spriteUrl(pet.id)}')` }}
+                    />
+                  </span>
+                </span>
+                <span className="hero-character-name">{pet.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="hero-index mono">
+          <span>{String(SPECIES.length).padStart(2, "0")} CHARACTERS</span>
+          <span>{CLIPS.length} STATES</span>
+        </div>
       </div>
     </section>
   );

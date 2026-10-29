@@ -13,6 +13,10 @@
   text-align: center;
   z-index: 2;
 }
+.hero-inner {
+  position: relative;
+  height: 100%;
+}
 .hero-background {
   position: absolute;
   inset: 0;
