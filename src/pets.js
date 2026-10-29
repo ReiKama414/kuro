@@ -181,8 +181,9 @@ export const clipInfo = (species, name) => ({
   ...CLIPS.find((clip) => clip.name === name),
   frames: FRAMES[species][name],
 });
+const assetBase = import.meta.env.BASE_URL || "./";
 export const spriteUrl = (species, clip = "idle") =>
-  `/assets/sprites/${species}/${clip}.png`;
+  `${assetBase}assets/sprites/${species}/${clip}.png`;
 
 export function readSettings() {
   try {
