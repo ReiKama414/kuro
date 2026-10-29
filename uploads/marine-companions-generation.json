@@ -1,0 +1,20 @@
+{
+  "generated_with": "built-in image_gen",
+  "transparent_background": true,
+  "assets": [
+    {
+      "species": "jellyfish",
+      "source_atlas": "C:/Users/User/Rei/Code/Web/kuro/uploads/sheet-jellyfish.png",
+      "runtime_directory": "C:/Users/User/Rei/Code/Web/kuro/assets/sprites/jellyfish",
+      "prompt_file": "C:/Users/User/Rei/Code/Web/kuro/uploads/jellyfish-prompt.txt",
+      "clips": 13
+    },
+    {
+      "species": "squid",
+      "source_atlas": "C:/Users/User/Rei/Code/Web/kuro/uploads/sheet-squid.png",
+      "runtime_directory": "C:/Users/User/Rei/Code/Web/kuro/assets/sprites/squid",
+      "prompt_file": "C:/Users/User/Rei/Code/Web/kuro/uploads/squid-prompt.txt",
+      "clips": 13
+    }
+  ]
+}

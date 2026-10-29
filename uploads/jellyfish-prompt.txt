@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: game companion sprite atlas in a cozy hand-painted chibi animal collection, softly shaded rounded volumetric illustration, not pixel art or vector.
+Primary request: one adorable baby JELLYFISH with a rounded soft pastel lavender jelly bell, pale lilac rim, subtle rose blush cheeks and two large glossy dark friendly eyes on the front of the bell. Six short thick gently curling lavender tentacles attached visibly below the bell, no detached stinging threads. Soft milky jelly material with opaque center, delicate highlights, keep face/body legible against deep forest green. No arms or legs, only jellyfish tentacles. Facing RIGHT in profile rows, slight bell tilt conveys direction. Main bell silhouette remains consistent in every pose. Sleeping bell lowers slightly, tentacles curl beneath it. Full silhouette about 100px wide by 125px high in each192px cell. Cute cozy painterly shading matching small cat, panda and fox companions
+Create exactly EIGHT equal columns by NINE equal rows, 72 fully visible isolated poses of the SAME character, transparent RGBA background, ideally 1536x1728. Fixed camera and constant character scale in every cell, at least 18 percent empty padding on every side. Each silhouette entirely within its own cell, all tentacles visibly connected and contained within its cell. No text, numbers, labels, panels, dividers, water, ground, shadows, sparkles, bubbles, accessories, props or detached fragments. Keep opaque painted colors inside the body even though background is transparent, no holes through its face or body. All tentacles short and thick enough to read at small web-sprite sizes.
+Exact row layout left to right:
+row1 eight front-facing idle poses with eyes open, gentle floating/breathing pulse, same bottom baseline;
+row2 eight front-facing blink poses from eyes open to closed and back open;
+row3 eight RIGHT-facing side-profile slow swimming cycle poses, face toward RIGHT, subtly undulating connected tentacles;
+row4 eight front-facing swimming toward viewer poses, face visible in EVERY cell;
+row5 eight rear-facing swimming away poses, NO face or eyes in any cell;
+row6 eight RIGHT-facing side-profile fast swimming pulse cycle poses, stronger mantle/bell contraction and tentacle motion;
+row7 first four cells settling down into a compact resting pose, last four cells reclining into a lower relaxed resting pose;
+row8 first four cells sleeping tucked in a compact pose with eyes shut and subtle breathing, last four cells RIGHT-profile jump anticipation, launch, ascent, peak;
+row9 first four cells RIGHT-profile jump descent, landing contact, compression, recovery, last four cells front-facing petting reaction: surprised, happy eyes shut, gentle lean, return to original idle.
+Strictly maintain 8 columns and 9 rows. All 72 bodies fully visible, separated, same size and cleanly alpha matted. Left-facing swimming will be mirrored in code. Profile motions MUST face RIGHT.

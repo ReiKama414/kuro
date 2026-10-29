@@ -1,0 +1,27 @@
+{
+  "generated_with": "built-in image_gen",
+  "transparent_background": true,
+  "assets": [
+    {
+      "species": "crow",
+      "source_atlas": "C:/Users/User/Rei/Code/Web/kuro/uploads/sheet-crow.png",
+      "runtime_directory": "C:/Users/User/Rei/Code/Web/kuro/assets/sprites/crow",
+      "prompt_file": "C:/Users/User/Rei/Code/Web/kuro/uploads/crow-prompt.txt",
+      "clips": 13
+    },
+    {
+      "species": "spider",
+      "source_atlas": "C:/Users/User/Rei/Code/Web/kuro/uploads/sheet-spider.png",
+      "runtime_directory": "C:/Users/User/Rei/Code/Web/kuro/assets/sprites/spider",
+      "prompt_file": "C:/Users/User/Rei/Code/Web/kuro/uploads/spider-prompt.txt",
+      "clips": 13
+    },
+    {
+      "species": "fox",
+      "source_atlas": "C:/Users/User/Rei/Code/Web/kuro/uploads/sheet-fox.png",
+      "runtime_directory": "C:/Users/User/Rei/Code/Web/kuro/assets/sprites/fox",
+      "prompt_file": "C:/Users/User/Rei/Code/Web/kuro/uploads/fox-prompt.txt",
+      "clips": 13
+    }
+  ]
+}

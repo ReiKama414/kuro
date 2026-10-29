@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: game companion sprite atlas in a cozy hand-painted chibi animal collection, softly shaded rounded volumetric illustration, not pixel art or vector.
+Primary request: one adorable baby SQUID with a distinct tapered elongated warm peach/coral-orange mantle, two small triangular fins on the UPPER sides of its mantle, a rounded head below the mantle with two large glossy dark friendly eyes and subtle blush. Eight short thick soft tentacles and two slightly longer central tentacles visibly attached directly beneath the head, simplified rounded tips, no suction-cup microdetails, no detached pieces. CLEAR SQUID silhouette, NOT an octopus: prominent tapered mantle and two small side fins. Cream warm peach underside and coral orange mantle stay consistent in every pose. Opaque watercolor-like painted body, softly shaded like cozy cat, panda and fox companion sprites, no photorealism. Right-facing profile swimming has mantle tilted toward right and tentacles trailing left while remaining entirely inside the cell. Sleeping tucked with eyes closed. Full silhouette at most125px wide by125px high per192px cell
+Create exactly EIGHT equal columns by NINE equal rows, 72 fully visible isolated poses of the SAME character, transparent RGBA background, ideally 1536x1728. Fixed camera and constant character scale in every cell, at least 18 percent empty padding on every side. Each silhouette entirely within its own cell, all tentacles visibly connected and contained within its cell. No text, numbers, labels, panels, dividers, water, ground, shadows, sparkles, bubbles, accessories, props or detached fragments. Keep opaque painted colors inside the body even though background is transparent, no holes through its face or body. All tentacles short and thick enough to read at small web-sprite sizes.
+Exact row layout left to right:
+row1 eight front-facing idle poses with eyes open, gentle floating/breathing pulse, same bottom baseline;
+row2 eight front-facing blink poses from eyes open to closed and back open;
+row3 eight RIGHT-facing side-profile slow swimming cycle poses, face toward RIGHT, subtly undulating connected tentacles;
+row4 eight front-facing swimming toward viewer poses, face visible in EVERY cell;
+row5 eight rear-facing swimming away poses, NO face or eyes in any cell;
+row6 eight RIGHT-facing side-profile fast swimming pulse cycle poses, stronger mantle/bell contraction and tentacle motion;
+row7 first four cells settling down into a compact resting pose, last four cells reclining into a lower relaxed resting pose;
+row8 first four cells sleeping tucked in a compact pose with eyes shut and subtle breathing, last four cells RIGHT-profile jump anticipation, launch, ascent, peak;
+row9 first four cells RIGHT-profile jump descent, landing contact, compression, recovery, last four cells front-facing petting reaction: surprised, happy eyes shut, gentle lean, return to original idle.
+Strictly maintain 8 columns and 9 rows. All 72 bodies fully visible, separated, same size and cleanly alpha matted. Left-facing swimming will be mirrored in code. Profile motions MUST face RIGHT.
